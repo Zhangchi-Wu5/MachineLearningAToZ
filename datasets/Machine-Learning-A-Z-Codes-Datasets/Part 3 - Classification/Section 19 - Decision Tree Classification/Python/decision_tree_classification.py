@@ -1,48 +1,63 @@
-# Decision Tree Classification
+# 决策树分类
+# 基于树结构的分类算法，通过一系列if-else条件进行决策
 
-# Importing the libraries
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
+# 导入必要的库
+import numpy as np           # 用于数值计算
+import matplotlib.pyplot as plt  # 用于数据可视化
+import pandas as pd          # 用于数据处理
 
-# Importing the dataset
-dataset = pd.read_csv('Social_Network_Ads.csv')
-X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, -1].values
+# 导入数据集
+dataset = pd.read_csv('Social_Network_Ads.csv')  # 社交网络广告数据集
+X = dataset.iloc[:, :-1].values  # 特征：年龄和预估薪资
+y = dataset.iloc[:, -1].values   # 目标变量：是否购买产品（0或1）
 
-# Splitting the dataset into the Training set and Test set
+# 将数据集拆分为训练集和测试集
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+print("训练集特征：")
 print(X_train)
+print("训练集标签：")
 print(y_train)
+print("测试集特征：")
 print(X_test)
+print("测试集标签：")
 print(y_test)
 
-# Feature Scaling
+# 特征缩放
+# 注意：决策树本身不需要特征缩放，但为了可视化效果保持一致性，这里仍然进行缩放
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
+X_train = sc.fit_transform(X_train)  # 拟合并转换训练集
+X_test = sc.transform(X_test)        # 转换测试集
+print("标准化后的训练集：")
 print(X_train)
+print("标准化后的测试集：")
 print(X_test)
 
-# Training the Decision Tree Classification model on the Training set
+# 在训练集上训练决策树分类模型
 from sklearn.tree import DecisionTreeClassifier
+# criterion='entropy'：使用信息熵作为分割标准
 classifier = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)
-classifier.fit(X_train, y_train)
+classifier.fit(X_train, y_train)  # 训练决策树模型
 
-# Predicting a new result
+# 预测新的结果
+# 例如：预测30岁、年薪87000的用户是否会购买产品
+print("单个预测结果：")
 print(classifier.predict(sc.transform([[30,87000]])))
 
-# Predicting the Test set results
-y_pred = classifier.predict(X_test)
+# 预测测试集结果
+y_pred = classifier.predict(X_test)  # 对测试集进行预测
+# 并排显示预测值和真实值进行比较
+print("预测值 vs 真实值：")
 print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
 
-# Making the Confusion Matrix
+# 创建混淆矩阵
+# 用于评估分类模型的性能
 from sklearn.metrics import confusion_matrix, accuracy_score
-cm = confusion_matrix(y_test, y_pred)
+cm = confusion_matrix(y_test, y_pred)  # 生成混淆矩阵
+print("混淆矩阵：")
 print(cm)
-accuracy_score(y_test, y_pred)
+print("准确率：", accuracy_score(y_test, y_pred))
 
 # Visualising the Training set results
 from matplotlib.colors import ListedColormap
