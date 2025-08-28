@@ -23,8 +23,8 @@ print(X)
 print("y info")
 print(y)
 
-imputer.fit(X[:, 1:3 ])
-X[:, 1:3 ] = imputer.transform(X[:, 1:3 ])
+imputer.fit(X[:, 1:3])
+X[:, 1:3] = imputer.transform(X[:, 1:3])
 
 print("Transformed dataset info")
 print(X)

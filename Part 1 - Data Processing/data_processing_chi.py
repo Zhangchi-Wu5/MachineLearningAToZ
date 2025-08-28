@@ -31,7 +31,11 @@ print(y_train)
 
 from sklearn.impute import SimpleImputer
 imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
-imputer.fit(X[:, 1:3])
-X[:, 1:3] = imputer.transform(X[:, 1:3])
+imputer.fit(X_train[:, 1:3])
+X_train[:, 1:3] = imputer.transform(X_train[:, 1:3])
+X_test[:, 1:3] = imputer.transform(X_test[:, 1:3])
 
-print(X)
+print("X_train after imputation:")
+print(X_train)
+print("X_test after imputation:")
+print(X_test)
